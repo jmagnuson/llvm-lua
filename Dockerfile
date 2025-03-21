@@ -1,7 +1,10 @@
-FROM silkeh/clang:17-bookworm
+ARG LLVM_VERSION=19
+FROM silkeh/clang:${LLVM_VERSION}-bookworm
 
-RUN apt update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+ARG LLVM_VERSION
+
+RUN apt update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
     make \
     zlib1g-dev \
     libzstd-dev \
@@ -10,14 +13,13 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 WORKDIR /llvm-lua
 COPY .. .
 
-RUN mkdir -p /llvm-lua/build
-
+RUN mkdir -p build
 WORKDIR /llvm-lua/build
 
 RUN cmake \
-  -DLLVM_PATH=/usr/lib/llvm-17 \
-  -DCMAKE_CXX_COMPILER=/usr/lib/llvm-17/bin/clang++ \
-  -DCMAKE_C_COMPILER=/usr/lib/llvm-17/bin/clang \
+  -DLLVM_PATH=/usr/lib/llvm-${LLVM_VERSION} \
+  -DCMAKE_CXX_COMPILER=/usr/lib/llvm-${LLVM_VERSION}/bin/clang++ \
+  -DCMAKE_C_COMPILER=/usr/lib/llvm-${LLVM_VERSION}/bin/clang \
   -DCMAKE_BUILD_TYPE=Release \
   -DLUA_USE_CURSES=OFF \
   -DCMAKE_VERBOSE_MAKEFILE=ON \
