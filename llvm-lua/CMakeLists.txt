@@ -105,7 +105,7 @@ if(WANT_STATIC_LIBRARY)
 	add_library(llvm-lua_static STATIC ${LLVM_LUA_LIB_SRC})
 	add_target_properties(llvm-lua_static COMPILE_FLAGS "${COMMON_CFLAGS} ${LLVM_CFLAGS}")
 	add_target_properties(llvm-lua_static LINK_FLAGS "${LD_FLAGS} ${COMMON_LDFLAGS} ${LLVM_LFLAGS}")
-	target_link_libraries(llvm-lua_static ${LIBS} ${LLVM_ALL_LIBS})
+	target_link_libraries(llvm-lua_static LLVM ${LIBS})
 
 	# link lua interpreter with static library
 	set(LLVM_LUA_MAIN_LIB llvm-lua_static)
@@ -128,7 +128,7 @@ if(WANT_SHARED_LIBRARY)
 	add_library(llvm-lua_dynamic SHARED ${LLVM_LUA_LIB_SRC})
 	add_target_properties(llvm-lua_dynamic COMPILE_FLAGS "${COMMON_CFLAGS} ${LLVM_CFLAGS}")
 	add_target_properties(llvm-lua_dynamic LINK_FLAGS "${LD_FLAGS} ${COMMON_LDFLAGS} ${LLVM_LFLAGS}")
-	target_link_libraries(llvm-lua_dynamic ${LIBS} ${LLVM_ALL_LIBS})
+	target_link_libraries(llvm-lua_dynamic LLVM ${LIBS})
 	set_target_properties(llvm-lua_dynamic PROPERTIES OUTPUT_NAME llvm-lua)
 
 	# link lua interpreter with dynamic library
@@ -222,7 +222,7 @@ add_executable(llvm-luac ${LLVM_LUAC_SRC})
 add_target_properties(llvm-luac COMPILE_FLAGS "${COMMON_CFLAGS} ${LLVM_CFLAGS}")
 add_target_properties(llvm-luac LINK_FLAGS
 	"${LD_FLAGS} ${COMMON_LDFLAGS} ${LLVM_LFLAGS}")
-target_link_libraries(llvm-luac ${LLVM_LUA_MAIN_LIB} ${LLVM_ALL_LIBS})
+target_link_libraries(llvm-luac LLVM ${LLVM_LUA_MAIN_LIB})
 set(LLVM_LUA_BINS llvm-luac)
 
 #
